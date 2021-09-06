@@ -1,46 +1,39 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
-$text = "Hello, User!";
-$title = "Hello page";
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-
-Route::get('/', function () use($text, $title) {
-    return <<<php
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$title</title>
-</head>
-<body>
-    <h1>$text</h1>
-</body>
-</html>
-php;
+Route::get('/', function () {
+    return view('index');
 });
 
-Route::get('/info', function () {
-    phpinfo();
+//admin
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('news', AdminNewsController::class);
 });
 
-Route::get('/news', function () {
-    return <<<php
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>News</title>
-</head>
-<body>
-    <div>
-        <h1>Some news</h1>
-        <ul>
-            <li>News</li>
-            <li>Other news</li>
-            <li>And news</li>
-        </ul>
-    </div>
-</body>
-</html>
-php;
-});
+//news
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news');
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');
+Route::get('/news/categories', [CategoryController::class, 'index'])
+    ->name('news.categories');
+Route::get('/news/categories/{category_id}', [CategoryController::class, 'showFiltered'])
+    ->where('category_id', '\d+')
+    ->name('news.categories.showFiltered');
