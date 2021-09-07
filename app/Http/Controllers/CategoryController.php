@@ -15,7 +15,8 @@ class CategoryController extends Controller
     public function showFiltered(int $category_id)
     {
         return view('news.index', [
-            'newsList' => $this->filterNews($category_id)
+            'newsList' => $this->filterNews($category_id),
+            'categoriesList' => $this->categoriesList
         ]);
     }
 }

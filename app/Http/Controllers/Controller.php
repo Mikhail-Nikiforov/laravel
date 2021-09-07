@@ -37,13 +37,13 @@ class Controller extends BaseController
     {
         $faker = Factory::create('ru_RU');
         $data = [];
-        $countNumber = mt_rand(20,25);
+        $countNumber = mt_rand(5,15);
         for($i=0; $i<$countNumber; $i++) {
             $categoryNumber = mt_rand(0,4);
             $data[] = [
                 'id' => $i+1,
                 'title' => $faker->jobTitle(),
-                'description_short' => $faker->sentence(3),
+                'description' => $faker->sentence(3),
                 'description_long' => $faker->sentence(100),
                 'author' => $faker->name(),
                 'created_at' => now(),
