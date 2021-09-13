@@ -17,17 +17,24 @@
 
     </div>
 </header>
+@if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
 <!-- Page content-->
 <div class="container">
     <div class="row">
         <!-- Blog entries-->
         @yield('content')
         <!-- Side widgets-->
-        <x-sidebar :categoriesList="$categoriesList"></x-sidebar>
+        <x-sidebar></x-sidebar>
     </div>
 </div>
 <!-- Footer-->
-<x-footer></x-footer>
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+</footer>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\News;
 use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
@@ -11,8 +12,15 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
+    public function test_check_empty_news_list()
     {
-        $this->assertTrue(true);
+		$news = News::getNews();
+        $this->assertEquals($news, []);
+    }
+
+    public function test_function()
+    {
+        $test = News::functionForTest();
+        $this->assertEquals($test, [`t`, `e`, `s`, `t`]);
     }
 }

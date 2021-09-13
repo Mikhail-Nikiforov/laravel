@@ -14,9 +14,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index', [
-            'newsList' => $this->getNews()
-        ]);
+		return view('admin.news.index', [
+			'newsList' => $this->getNews()
+		]);
     }
 
     /**
@@ -24,9 +24,10 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+        return view('admin.news.create');
     }
 
     /**
@@ -37,7 +38,11 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$request->validate([
+			'title' => ['required', 'string', 'min:3']
+		]);
+
+		return redirect()->route('admin.news.index');
     }
 
     /**
