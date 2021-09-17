@@ -15,8 +15,3 @@
 </div>
 </div>
 @endsection
-@push('js')
-    <script>
-        alert("Hello!");
-    </script>
-@endpush
