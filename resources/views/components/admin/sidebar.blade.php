@@ -25,6 +25,21 @@
             <i class="fas fa-fw fa-list-alt"></i>
             <span>Категории</span></a>
     </li>
+    <li class="nav-item @if(request()->routeIs('admin.sources.*')) active @endif">
+        <a class="nav-link" href="{{ route('admin.sources.index') }}">
+            <i class="fas fa-fw fa-list-alt"></i>
+            <span>Источники</span></a>
+    </li>
+    <li class="nav-item @if(request()->routeIs('admin.orders.*')) active @endif">
+        <a class="nav-link" href="{{ route('admin.orders.index') }}">
+            <i class="fas fa-fw fa-list-alt"></i>
+            <span>Заказы</span></a>
+    </li>
+    <li class="nav-item @if(request()->routeIs('admin.feedback.*')) active @endif">
+        <a class="nav-link" href="{{ route('admin.feedback.index') }}">
+            <i class="fas fa-fw fa-list-alt"></i>
+            <span>Отзывы</span></a>
+    </li>
     <li class="nav-item @if(request()->routeIs('admin.news.*')) active @endif">
         <a class="nav-link" href="{{ route('admin.news.index') }}">
             <i class="fas fa-fw fa-list"></i>

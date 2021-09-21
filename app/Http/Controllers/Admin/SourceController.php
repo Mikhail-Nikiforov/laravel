@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Source;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class SourceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('news')->get();
+        $sources = Source::withCount('news')->get();
 
-        return view('admin.categories.index', [
-            'categories' => $categories
+        return view('admin.sources.index', [
+            'sources' => $sources
         ]);
     }
 
@@ -29,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.sources.create');
     }
 
     /**
@@ -41,17 +41,17 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'min:3']
+            'name_source' => ['required', 'string', 'min:3']
         ]);
 
-        $category = Category::create(
-            $request->only(['title','description'])
+        $source = Source::create(
+            $request->only(['name_source','description'])
         );
 
-        if( $category ) {
+        if( $source ) {
             return redirect()
                 ->route('admin.sources.index')
-                ->with('success', 'Категория успешно добавлена');
+                ->with('success', 'Источник успешно добавлен');
         }
 
         return back()
@@ -65,7 +65,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Source $source)
     {
         //
     }
@@ -73,13 +73,13 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Category $category
+     * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Source $source)
     {
-        return view('admin.categories.edit', [
-            'category' => $category
+        return view('admin.sources.edit', [
+            'source' => $source
         ]);
     }
 
@@ -90,15 +90,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Source $source)
     {
-        $category = $category->fill(
-            $request->only(['title', 'description'])
+        $source = $source->fill(
+            $request->only(['name_source', 'description'])
         )->save();
 
-        if($category) {
+        if($source) {
             return redirect()
-                ->route('admin.categories.index')
+                ->route('admin.sources.index')
                 ->with('success', 'Запись успешно обновлена');
         }
 
@@ -113,7 +113,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Source $source)
     {
         //
     }

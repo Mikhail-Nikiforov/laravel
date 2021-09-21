@@ -30,15 +30,15 @@
     <div class="card mb-4">
         <div class="card-header">Форма обратной связи</div>
         <div class="card-body">
-            <form method="post" action="{{ route('feedback') }}">
+            <form method="post" action="{{ route('feedback.store') }}">
                 @csrf
                 <div class="form-group">
-                    <label for="title">Ваше имя</label>
-                    <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }} " required>
+                    <label for="customerName">Ваше имя</label>
+                    <input type="text" class="form-control" name="customerName" id="customerName" value="{{ old('customerName') }} " required>
                 </div>
                 <div class="form-group">
-                    <label for="title">Отзыв</label>
-                    <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }} " required>
+                    <label for="description">Отзыв</label>
+                    <input type="text" class="form-control" name="description" id="description" value="{{ old('description') }} " required>
                 </div>
                 <button type="submit" class="btn btn-primary my-2">Сохранить</button>
             </form>

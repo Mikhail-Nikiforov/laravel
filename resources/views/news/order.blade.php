@@ -16,15 +16,15 @@
                                 <div class="alert alert-danger">{{ $error }}</div>
                             @endforeach
                         @endif
-                        <form method="post" action="{{ route('order.new') }}">
+                        <form method="post" action="{{ route('order.store') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="customerName">Имя</label>
                                 <input type="text" class="form-control" name="customerName" id="customerName" value="{{ old('customerName') }}">
                             </div>
                             <div class="form-group">
-                                <label for="telephone">Номер телефона</label>
-                                <input type="tel" class="form-control" name="telephone" id="telephone" value="{{ old('telephone') }}">
+                                <label for="phone">Номер телефона</label>
+                                <input type="tel" class="form-control" name="phone" id="phone" value="{{ old('phone') }}">
                             </div>
 
                             <div class="form-group">
@@ -33,8 +33,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="info">Какие данные вы хотите получить? Из какого источника?</label>
-                                <textarea class="form-control" name="info" id="info">{!! old('info') !!}</textarea>
+                                <label for="description">Какие данные вы хотите получить? Из какого источника?</label>
+                                <textarea class="form-control" name="description" id="description">{!! old('description') !!}</textarea>
                             </div>
                             <br>
                             <button type="submit" class="btn btn-primary">Сохранить</button>

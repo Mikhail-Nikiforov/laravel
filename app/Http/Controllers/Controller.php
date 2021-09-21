@@ -16,6 +16,7 @@ class Controller extends BaseController
 
 	protected function getNews()
     {
-		return (new News)->getNews();
+		return News::with('category')
+                ->paginate(config('news.paginate'));
 	}
 }

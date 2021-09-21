@@ -29,7 +29,7 @@
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
+    @include('inc.messages')
         <!-- Main Content -->
         <div id="content">
            <x-admin.header></x-admin.header>

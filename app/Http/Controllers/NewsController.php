@@ -20,8 +20,4 @@ class NewsController extends Controller
 		]);
 	}
 
-	public function feedback()
-    {
-        return redirect('news')->with('status', 'Профиль изменён!');
-    }
 }

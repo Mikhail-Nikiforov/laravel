@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\News;
-use App\Models\Source;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +15,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newsList = News::all();
+        $feedbackList = Feedback::all();
 
-        return view('admin.news.index', [
-            'newsList' => $newsList
+        return view('admin.feedback.index', [
+            'feedbackList' => $feedbackList
         ]);
     }
 
@@ -31,12 +29,7 @@ class NewsController extends Controller
      */
     public function create(Request $request)
     {
-        $categories =  Category::all();
-        $sources =  Source::all();
-        return view('admin.news.create', [
-            'categories' => $categories,
-            'sources' => $sources
-        ]);
+        return view('admin.feedback.create');
     }
 
     /**
@@ -47,22 +40,18 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
-
-        $news = News::create(
-            $request->only(['category_id', 'source_id', 'title', 'author', 'description'])
+        $feedback = Feedback::create(
+            $request->only(['customerName', 'description'])
         );
 
-        if( $news ) {
+        if( $feedback ) {
             return redirect()
-                ->route('admin.news.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->route('admin.feedback.index')
+                ->with('success', 'Отзыв успешно добавлен');
         }
 
         return back()
-            ->with('error', 'Запись не добавлена')
+            ->with('error', 'Отзыв не добавлена')
             ->withInput();
     }
 
@@ -72,9 +61,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Feedback $feedback)
     {
-
+        //
     }
 
     /**
@@ -83,15 +72,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(Feedback $feedback)
     {
-        $categories =  Category::all();
-        $sources =  Source::all();
-
-        return view('admin.news.edit', [
-            'news' => $news,
-            'categories' => $categories,
-            'sources' => $sources
+        return view('admin.feedback.edit', [
+            'feedback' => $feedback
         ]);
     }
 
@@ -102,24 +86,21 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, Feedback $feedback)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
 
-        $news = $news->fill(
-            $request->only(['category_id', 'title', 'author', 'description'])
+        $feedback = $feedback->fill(
+            $request->only(['customerName', 'description'])
         )->save();
 
-        if( $news ) {
+        if( $feedback ) {
             return redirect()
-                ->route('admin.news.index')
-                ->with('success', 'Запись успешно обновлена');
+                ->route('admin.feedback.index')
+                ->with('success', 'Отзыв успешно обновлен');
         }
 
         return back()
-            ->with('error', 'Запись не обновлена')
+            ->with('error', 'Отзыв не обновлен')
             ->withInput();
     }
 
@@ -129,8 +110,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Feedback $feedback)
     {
         //
     }
 }
+
+

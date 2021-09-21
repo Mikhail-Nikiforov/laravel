@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\News;
-use App\Models\Source;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +15,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newsList = News::all();
+        $orders = Order::all();
 
-        return view('admin.news.index', [
-            'newsList' => $newsList
+        return view('admin.orders.index', [
+            'orders' => $orders
         ]);
     }
 
@@ -31,12 +29,7 @@ class NewsController extends Controller
      */
     public function create(Request $request)
     {
-        $categories =  Category::all();
-        $sources =  Source::all();
-        return view('admin.news.create', [
-            'categories' => $categories,
-            'sources' => $sources
-        ]);
+        return view('admin.orders.create');
     }
 
     /**
@@ -47,18 +40,14 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
-
-        $news = News::create(
-            $request->only(['category_id', 'source_id', 'title', 'author', 'description'])
+        $order = Order::create(
+            $request->only(['customerName', 'phone', 'email', 'description'])
         );
 
-        if( $news ) {
+        if( $order ) {
             return redirect()
-                ->route('admin.news.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->route('admin.orders.index')
+                ->with('success', 'Заказ успешно добавлен');
         }
 
         return back()
@@ -72,9 +61,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Order $order)
     {
-
+        //
     }
 
     /**
@@ -83,15 +72,10 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(Order $order)
     {
-        $categories =  Category::all();
-        $sources =  Source::all();
-
-        return view('admin.news.edit', [
-            'news' => $news,
-            'categories' => $categories,
-            'sources' => $sources
+        return view('admin.orders.edit', [
+            'order' => $order
         ]);
     }
 
@@ -102,24 +86,21 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, Order $order)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
 
-        $news = $news->fill(
-            $request->only(['category_id', 'title', 'author', 'description'])
+        $order = $order->fill(
+            $request->only(['customerName', 'phone', 'email', 'description'])
         )->save();
 
-        if( $news ) {
+        if( $order ) {
             return redirect()
-                ->route('admin.news.index')
-                ->with('success', 'Запись успешно обновлена');
+                ->route('admin.orders.index')
+                ->with('success', 'Заказ успешно обновлен');
         }
 
         return back()
-            ->with('error', 'Запись не обновлена')
+            ->with('error', 'Заказ не обновлен')
             ->withInput();
     }
 
@@ -129,8 +110,9 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Order $order)
     {
         //
     }
 }
+
