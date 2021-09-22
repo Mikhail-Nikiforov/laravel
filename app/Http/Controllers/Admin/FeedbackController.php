@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FeedbackCreateRequest;
+use App\Http\Requests\FeedbackUpdateRequest;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,9 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbackList = Feedback::all();
+        $feedbackList = Feedback::paginate(
+                config('news.paginate')
+            );
 
         return view('admin.feedback.index', [
             'feedbackList' => $feedbackList
@@ -38,7 +42,7 @@ class FeedbackController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(FeedbackCreateRequest $request)
     {
         $feedback = Feedback::create(
             $request->only(['customerName', 'description'])
@@ -47,11 +51,11 @@ class FeedbackController extends Controller
         if( $feedback ) {
             return redirect()
                 ->route('admin.feedback.index')
-                ->with('success', 'Отзыв успешно добавлен');
+                ->with('success', __('messages.admin.feedback.create.success'));
         }
 
         return back()
-            ->with('error', 'Отзыв не добавлена')
+            ->with('error', __('messages.admin.feedback.create.fail'))
             ->withInput();
     }
 
@@ -86,7 +90,7 @@ class FeedbackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Feedback $feedback)
+    public function update(FeedbackUpdateRequest $request, Feedback $feedback)
     {
 
         $feedback = $feedback->fill(
@@ -96,11 +100,11 @@ class FeedbackController extends Controller
         if( $feedback ) {
             return redirect()
                 ->route('admin.feedback.index')
-                ->with('success', 'Отзыв успешно обновлен');
+                ->with('success', __('messages.admin.feedback.update.success'));
         }
 
         return back()
-            ->with('error', 'Отзыв не обновлен')
+            ->with('error', __('messages.admin.feedback.update.fail'))
             ->withInput();
     }
 
@@ -110,9 +114,18 @@ class FeedbackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Feedback $feedback)
+    public function destroy(Request $request, Feedback $feedback)
     {
-        //
+        if($request->ajax()) {
+            try {
+                $feedback->delete();
+                return response()->json(['message' => 'ok']);
+
+            } catch (\Exception $e) {
+                \Log::error("Error delete news" . PHP_EOL, [$e]);
+                return response()->json(['message' => 'error'], 400);
+            }
+        }
     }
 }
 

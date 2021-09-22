@@ -9,9 +9,6 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('inc.messages')
-
-
 
             <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
                 @csrf
@@ -37,10 +34,12 @@
                 <div class="form-group">
                     <label for="title">Заголовок</label>
                     <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}">
+                    @error('title') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <div class="form-group">
                     <label for="author">Автор</label>
                     <input type="text" class="form-control" name="author" id="author" value="{{ $news->author }}">
+                    @error('author') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">

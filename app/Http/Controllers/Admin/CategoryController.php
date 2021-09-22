@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryCreateRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::withCount('news')->get();
+        $categories = Category::withCount('news')
+            ->paginate(
+                config('news.paginate')
+            );
 
         return view('admin.categories.index', [
             'categories' => $categories
@@ -38,11 +43,8 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryCreateRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:3']
-        ]);
 
         $category = Category::create(
             $request->only(['title','description'])
@@ -50,12 +52,12 @@ class CategoryController extends Controller
 
         if( $category ) {
             return redirect()
-                ->route('admin.sources.index')
-                ->with('success', 'Категория успешно добавлена');
+            ->route('admin.categories.index')
+            ->with('success', __('messages.admin.category.create.success'));
         }
 
         return back()
-            ->with('error', 'Запись не добавлена')
+            ->with('error', __('messages.admin.category.create.fail'))
             ->withInput();
     }
 
@@ -90,7 +92,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
         $category = $category->fill(
             $request->only(['title', 'description'])
@@ -113,8 +115,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
-        //
+        if($request->ajax()) {
+            try {
+                $category->delete();
+                return response()->json(['message' => 'ok']);
+
+            } catch (\Exception $e) {
+                \Log::error("Error delete news" . PHP_EOL, [$e]);
+                return response()->json(['message' => 'error'], 400);
+            }
+        }
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Faker\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Collection;
 
 class News extends Model
 {

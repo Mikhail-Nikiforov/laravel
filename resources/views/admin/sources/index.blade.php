@@ -15,7 +15,7 @@
                     <tr>
                         <th>#ID</th>
                         <th>Колл-во новостей</th>
-                        <th>Источник</th>
+                        <th>Название</th>
                         <th>Дата добавления</th>
                         <th>Управление</th>
                     </tr>
@@ -31,7 +31,7 @@
                             <td>
                                 <a href="{{ route('admin.sources.edit', ['source' => $source->id]) }}">Ред.</a>
                                 &nbsp;
-                                <a href="">Уд.</a>
+                                <a href="javascript:;" class="delete" rel="{{ $source->id }}">Уд.</a>
                             </td>
                         </tr>
                     @empty
@@ -41,7 +41,35 @@
                     </tbody>
 
                 </table>
+                {!! $sources->links() !!}
             </div>
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        $(function() {
+            $(".delete").on('click', function() {
+                var id = $(this).attr("rel");
+                if(confirm("Подтверждаете удаление записи с #ID " + id)) {
+                    $.ajax({
+                        type: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "/admin/sources/" + id,
+                        success: function (response) {
+                            alert("Запись успешно удалена");
+                            console.log(response);
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

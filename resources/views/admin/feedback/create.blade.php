@@ -9,19 +9,20 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('inc.messages')
 
             <form method="post" action="{{ route('admin.feedback.store') }}">
                 @csrf
 
                 <div class="form-group">
-                    <label for="customerName">Имя заказчика</label>
+                    <label for="customerName">Имя</label>
                     <input type="text" class="form-control" name="customerName" id="customerName" value="{{ old('customerName') }}">
+                    @error('customerName') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <input type="text" class="form-control" name="description" id="description" value="{!! old('description') !!}">
+                    @error('description') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <br>
                 <button type="submit" class="btn btn-success">Сохранить</button>

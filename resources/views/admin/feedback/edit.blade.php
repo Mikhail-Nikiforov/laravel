@@ -16,11 +16,13 @@
                 <div class="form-group">
                     <label for="customerName">Имя</label>
                     <input type="text" class="form-control" name="customerName" id="customerName" value="{{ $feedback->customerName }}">
+                    @error('customerName') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="description">Описание</label>
+                    <label for="description">Отзыв</label>
                     <input type="text" class="form-control" name="description" id="description" value="{!! $feedback->description !!}">
+                    @error('description') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <br>
                 <button type="submit" class="btn btn-success">Сохранить</button>

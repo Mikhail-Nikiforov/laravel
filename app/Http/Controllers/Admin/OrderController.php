@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderCreateRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::paginate(
+                config('news.paginate')
+            );
 
         return view('admin.orders.index', [
             'orders' => $orders
@@ -38,7 +42,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(OrderCreateRequest $request)
     {
         $order = Order::create(
             $request->only(['customerName', 'phone', 'email', 'description'])
@@ -47,11 +51,11 @@ class OrderController extends Controller
         if( $order ) {
             return redirect()
                 ->route('admin.orders.index')
-                ->with('success', 'Заказ успешно добавлен');
+                ->with('success', __('messages.admin.order.create.success'));
         }
 
         return back()
-            ->with('error', 'Запись не добавлена')
+            ->with('error', __('messages.admin.order.create.fail'))
             ->withInput();
     }
 
@@ -86,7 +90,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Order $order)
+    public function update(OrderUpdateRequest $request, Order $order)
     {
 
         $order = $order->fill(
@@ -96,11 +100,11 @@ class OrderController extends Controller
         if( $order ) {
             return redirect()
                 ->route('admin.orders.index')
-                ->with('success', 'Заказ успешно обновлен');
+                ->with('success', __('messages.admin.order.update.success'));
         }
 
         return back()
-            ->with('error', 'Заказ не обновлен')
+            ->with('error', __('messages.admin.order.update.fail'))
             ->withInput();
     }
 
@@ -110,9 +114,18 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request, Order $order)
     {
-        //
+        if($request->ajax()) {
+            try {
+                $order->delete();
+                return response()->json(['message' => 'ok']);
+
+            } catch (\Exception $e) {
+                \Log::error("Error delete news" . PHP_EOL, [$e]);
+                return response()->json(['message' => 'error'], 400);
+            }
+        }
     }
 }
 

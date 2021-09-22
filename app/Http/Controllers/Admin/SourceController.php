@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SourceCreateRequest;
+use App\Http\Requests\SourceUpdateRequest;
 use App\Models\Source;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,10 @@ class SourceController extends Controller
      */
     public function index()
     {
-        $sources = Source::withCount('news')->get();
+        $sources = Source::withCount('news')
+            ->paginate(
+                config('news.paginate')
+            );
 
         return view('admin.sources.index', [
             'sources' => $sources
@@ -38,7 +43,7 @@ class SourceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SourceCreateRequest $request)
     {
         $request->validate([
             'name_source' => ['required', 'string', 'min:3']
@@ -50,12 +55,12 @@ class SourceController extends Controller
 
         if( $source ) {
             return redirect()
-                ->route('admin.sources.index')
-                ->with('success', 'Источник успешно добавлен');
+                ->route('admin.news.index')
+                ->with('success', __('messages.admin.source.create.success'));
         }
 
         return back()
-            ->with('error', 'Запись не добавлена')
+            ->with('error', __('messages.admin.source.create.fail'))
             ->withInput();
     }
 
@@ -90,7 +95,7 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Source $source)
+    public function update(SourceUpdateRequest $request, Source $source)
     {
         $source = $source->fill(
             $request->only(['name_source', 'description'])
@@ -99,11 +104,11 @@ class SourceController extends Controller
         if($source) {
             return redirect()
                 ->route('admin.sources.index')
-                ->with('success', 'Запись успешно обновлена');
+                ->with('success', __('messages.admin.source.update.success'));
         }
 
         return back()
-            ->with('error', 'Запись не была обновлена')
+            ->with('error', __('messages.admin.source.update.fail'))
             ->withInput();
     }
 
@@ -113,8 +118,17 @@ class SourceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Source $source)
+    public function destroy(Request $request, Source $source)
     {
-        //
+        if($request->ajax()) {
+            try {
+                $source->delete();
+                return response()->json(['message' => 'ok']);
+
+            } catch (\Exception $e) {
+                \Log::error("Error delete news" . PHP_EOL, [$e]);
+                return response()->json(['message' => 'error'], 400);
+            }
+        }
     }
 }

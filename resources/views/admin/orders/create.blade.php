@@ -9,29 +9,31 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('inc.messages')
-
             <form method="post" action="{{ route('admin.orders.store') }}">
                 @csrf
 
                 <div class="form-group">
                     <label for="customerName">Имя заказчика</label>
                     <input type="text" class="form-control" name="customerName" id="customerName" value="{{ old('customerName') }}">
+                    @error('customerName') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Телефон</label>
                     <input type="tel" class="form-control" name="phone" id="phone" value="{{ old('phone') }}">
+                    @error('phone') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <input type="text" class="form-control" name="email" id="email" value="{!! old('email') !!}">
+                    @error('email') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <input type="text" class="form-control" name="description" id="description" value="{!! old('description') !!}">
+                    @error('description') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <br>
                 <button type="submit" class="btn btn-success">Сохранить</button>

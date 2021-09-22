@@ -9,14 +9,13 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('inc.messages')
-
             <form method="post" action="{{ route('admin.sources.store') }}">
                 @csrf
 
                 <div class="form-group">
-                    <label for="name_source">Заголовок</label>
+                    <label for="name_source">Название</label>
                     <input type="text" class="form-control" name="name_source" id="name_source" value="{{ old('name_source') }}">
+                    @error('name_source') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
 

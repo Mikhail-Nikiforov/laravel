@@ -9,7 +9,6 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('inc.messages')
 
             <form method="post" action="{{ route('admin.categories.update', ['category' => $category]) }}">
                 @csrf
@@ -18,6 +17,7 @@
                 <div class="form-group">
                     <label for="title">Заголовок</label>
                     <input type="text" class="form-control" name="title" id="title" value="{{ $category->title }}">
+                    @error('title') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
 

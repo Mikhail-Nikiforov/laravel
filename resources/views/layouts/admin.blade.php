@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
     <title>@section('title') GeekBlog @show</title>
@@ -29,7 +30,6 @@
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-    @include('inc.messages')
         <!-- Main Content -->
         <div id="content">
            <x-admin.header></x-admin.header>
@@ -68,5 +68,6 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{{ asset('assets/js/sb-admin-2.js') }}"></script>
+@stack('js')
 </body>
 </html>

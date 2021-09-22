@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Http\Requests\OrderCreateRequest;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -25,9 +26,8 @@ class OrderController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function store(Request $request)
+    public function store(OrderCreateRequest $request)
     {
-
         $order = Order::create(
             $request->only(['customerName', 'phone', 'email', 'description'])
         );
@@ -35,11 +35,11 @@ class OrderController extends Controller
         if( $order ) {
             return redirect()
                 ->route('news')
-                ->with('success', 'Заказ успешно оформлен! В ближайшее время наш менеджер свяжется с вами.');
+                ->with('success', __('messages.admin.order.create.success'));
         }
 
         return back()
-            ->with('error', 'Не удалось оформить заказ')
+            ->with('error', __('messages.admin.order.create.fail'))
             ->withInput();
     }
 }

@@ -35,10 +35,12 @@
                 <div class="form-group">
                     <label for="customerName">Ваше имя</label>
                     <input type="text" class="form-control" name="customerName" id="customerName" value="{{ old('customerName') }} " required>
+                    @error('customerName') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <div class="form-group">
                     <label for="description">Отзыв</label>
                     <input type="text" class="form-control" name="description" id="description" value="{{ old('description') }} " required>
+                    @error('description') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <button type="submit" class="btn btn-primary my-2">Сохранить</button>
             </form>

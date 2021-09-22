@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Http\Requests\FeedbackCreateRequest;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -15,9 +16,9 @@ class FeedbackController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function store(Request $request)
-    {
 
+    public function store(FeedbackCreateRequest $request)
+    {
         $feedback = Feedback::create(
             $request->only(['customerName', 'description'])
         );
@@ -25,11 +26,11 @@ class FeedbackController extends Controller
         if( $feedback ) {
             return redirect()
                 ->route('news')
-                ->with('success', 'Отзыв успешно оставлен!');
+                ->with('success', __('messages.admin.feedback.create.success'));
         }
 
         return back()
-            ->with('error', 'Не удалось оформить заказ')
+            ->with('error', __('messages.admin.feedback.create.fail'))
             ->withInput();
     }
 }

@@ -32,7 +32,7 @@
                         <td>
                             <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}">Ред.</a>
                             &nbsp;
-                            <a href="">Уд.</a>
+                            <a href="javascript:;" class="delete" rel="{{ $news->id }}">Уд.</a>
                         </td>
                     </tr>
                 @empty
@@ -41,7 +41,35 @@
                 </tbody>
 
             </table>
+            {!! $newsList->links() !!}
         </div>
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        $(function() {
+            $(".delete").on('click', function() {
+                var id = $(this).attr("rel");
+                if(confirm("Подтверждаете удаление записи с #ID " + id)) {
+                    $.ajax({
+                        type: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: "/admin/news/" + id,
+                        success: function (response) {
+                            alert("Запись успешно удалена");
+                            console.log(response);
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

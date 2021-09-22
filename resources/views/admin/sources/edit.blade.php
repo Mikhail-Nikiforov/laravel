@@ -9,16 +9,15 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('inc.messages')
             <form method="post" action="{{ route('admin.sources.update', ['source' => $source]) }}">
                 @csrf
                 @method('put')
 
                 <div class="form-group">
-                    <label for="name_source">Заголовок</label>
+                    <label for="name_source">Название</label>
                     <input type="text" class="form-control" name="name_source" id="name_source" value="{{ $source->name_source }}">
+                    @error('name_source') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
-
 
                 <div class="form-group">
                     <label for="description">Описание</label>
