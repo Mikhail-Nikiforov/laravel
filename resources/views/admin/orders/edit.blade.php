@@ -28,13 +28,13 @@
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="text" class="form-control" name="email" id="email" value="{!! $order->email !!}">
+                    <input type="text" class="form-control" name="email" id="email" value="{{ $order->email }}">
                     @error('email') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="description">Описание</label>
-                    <input type="text" class="form-control" name="description" id="description" value="{!! $order->description !!}">
+                    <input type="text" class="form-control" name="description" id="description" value="{{ $order->description }}">
                     @error('description') <div style="color:red;">{{ $message }}</div> @enderror
                 </div>
                 <br>
