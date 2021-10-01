@@ -2,16 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
+
+    use HasFactory;
+
     protected $table = "news";
 
 
     protected $fillable = [
-        'category_id', 'source_id', 'title', 'author', 'description'
+        'category_id',
+        'source_id',
+        'title',
+        'author',
+        'description'
     ];
 
     public function category(): BelongsTo
@@ -23,4 +31,5 @@ class News extends Model
    {
        return [`t`, `e`, `s`, `t`];
    }
+
 }

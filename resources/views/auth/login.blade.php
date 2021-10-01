@@ -50,7 +50,9 @@
                                 </div>
                             </div>
                         </div>
-
+                        <a href="{{route('vk.start')}}">Авторизация через ВК</a>
+                        <br><a href="{{route('yandex.start')}}">Авторизация через Yandex</a>
+                        <br>
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
