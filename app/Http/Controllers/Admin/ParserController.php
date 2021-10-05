@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contract\Parser;
 use App\Http\Controllers\Controller;
+use App\Jobs\NewsJob;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 
 
@@ -17,6 +19,11 @@ class ParserController extends Controller
      */
     public function __invoke(Request $request, Parser $service)
     {
-        return $service->parse('https://news.yandex.ru/music.rss');
+        $urls = Resource::all();
+
+        foreach ($urls as $url) {
+            dispatch(new NewsJob($url->link));
+        }
+        return back()->with('success', 'Новости добавлены в очередь');
     }
 }

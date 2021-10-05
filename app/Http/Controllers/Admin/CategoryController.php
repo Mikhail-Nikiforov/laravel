@@ -18,9 +18,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::withCount('news')
-            ->paginate(
-                config('news.paginate')
-            );
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('admin.paginate'));
 
         return view('admin.categories.index', [
             'categories' => $categories

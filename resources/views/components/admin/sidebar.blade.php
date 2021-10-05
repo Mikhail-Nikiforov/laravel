@@ -40,6 +40,11 @@
             <i class="fas fa-fw fa-list-alt"></i>
             <span>Отзывы</span></a>
     </li>
+    <li class="nav-item @if(request()->routeIs('admin.resources.*')) active @endif">
+        <a class="nav-link" href="{{ route('admin.resources.index') }}">
+            <i class="fas fa-fw fa-list-alt"></i>
+            <span>Ресурсы</span></a>
+    </li>
     <li class="nav-item @if(request()->routeIs('admin.users.*')) active @endif">
         <a class="nav-link" href="{{ route('admin.users.index') }}">
             <i class="fas fa-fw fa-list"></i>

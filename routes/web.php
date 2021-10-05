@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\ParserController;
+use App\Http\Controllers\Admin\ResourcesController as AdminResourcesController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\YandexSocialController;
 /*
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('orders', AdminOrderController::class);
         Route::resource('feedback', AdminFeedbackController::class);
         Route::resource('users', AdminUserController::class);
+        Route::resource('resources', AdminResourcesController::class);
     });
 });
 

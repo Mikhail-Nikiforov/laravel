@@ -4,6 +4,6 @@ namespace App\Contract;
 
 interface Parser
 {
-    public function parse(string  $link): array;
+    public function parse(string  $link): void;
 
 }

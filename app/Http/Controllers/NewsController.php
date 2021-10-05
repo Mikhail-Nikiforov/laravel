@@ -10,11 +10,11 @@ class NewsController extends Controller
 {
     public function index()
 	{
-        event(new NewsEvent());
+//        event(new NewsEvent());
 
-        $newsList = News::paginate(
-            config('news.paginate')
-        );
+        $newsList = News::query()
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('news.paginate'));
 
 		return view('news.index', [
 			'newsList' => $newsList,

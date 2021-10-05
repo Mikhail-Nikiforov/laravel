@@ -19,7 +19,10 @@ class News extends Model
         'source_id',
         'title',
         'author',
-        'description'
+        'description',
+        'image',
+        'guid',
+        'created_at'
     ];
 
     public function category(): BelongsTo

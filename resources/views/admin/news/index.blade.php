@@ -7,9 +7,13 @@
     <h1 class="h3 mb-0 text-gray-800">Список новостей</h1>
     <a href="{{ route('admin.news.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-plus fa-sm text-white-50"></i> Добавить новость</a>
+    <br>
+    <a href="{{ route('admin.parser') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-plus fa-sm text-white-50"></i> Спарсить новости</a>
 </div>
 <div class="row">
     <div class="col-md-12">
+        @include('inc.messages')
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>

@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\OrderCreateRequest;
-use App\Http\Requests\OrderUpdateRequest;
-use App\Models\Order;
+use App\Http\Requests\ResourceCreateRequest;
+use App\Http\Requests\ResourceUpdateRequest;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class ResourcesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,45 +17,44 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::query()
-            ->orderBy('created_at', 'desc')
+        $resources = Resource::query()
             ->paginate(config('admin.paginate'));
 
-        return view('admin.orders.index', [
-            'orders' => $orders
+        return view('admin.resources.index', [
+            'resources' => $resources
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        return view('admin.orders.create');
+        return view('admin.resources.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
-    public function store(OrderCreateRequest $request)
+    public function store(ResourceCreateRequest $request)
     {
-        $order = Order::create(
-            $request->only(['customerName', 'phone', 'email', 'description'])
+        $resource = Resource::create(
+            $request->only(['title', 'link', 'description'])
         );
 
-        if( $order ) {
+        if( $resource ) {
             return redirect()
-                ->route('admin.orders.index')
-                ->with('success', __('messages.admin.order.create.success'));
+                ->route('admin.resources.index')
+                ->with('success', __('messages.admin.resource.create.success'));
         }
 
         return back()
-            ->with('error', __('messages.admin.order.create.fail'))
+            ->with('error', __('messages.admin.resource.create.fail'))
             ->withInput();
     }
 
@@ -65,7 +64,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(Resource $resource)
     {
         //
     }
@@ -73,13 +72,13 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Resource $resource
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(Resource $resource)
     {
-        return view('admin.orders.edit', [
-            'order' => $order
+        return view('admin.resources.edit', [
+            'resource' => $resource
         ]);
     }
 
@@ -90,21 +89,20 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(OrderUpdateRequest $request, Order $order)
+    public function update(ResourceUpdateRequest $request, Resource $resource)
     {
-
-        $order = $order->fill(
-            $request->only(['customerName', 'phone', 'email', 'description'])
+        $resource = $resource->fill(
+            $request->only(['title', 'link', 'description'])
         )->save();
 
-        if( $order ) {
+        if($resource) {
             return redirect()
-                ->route('admin.orders.index')
-                ->with('success', __('messages.admin.order.update.success'));
+                ->route('admin.resources.index')
+                ->with('success', __('messages.admin.resource.update.success'));
         }
 
         return back()
-            ->with('error', __('messages.admin.order.update.fail'))
+            ->with('error', __('messages.admin.resource.update.fail'))
             ->withInput();
     }
 
@@ -114,11 +112,11 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Order $order)
+    public function destroy(Request $request, Resource $resource)
     {
         if($request->ajax()) {
             try {
-                $order->delete();
+                $resource->delete();
                 return response()->json(['message' => 'ok']);
 
             } catch (\Exception $e) {
@@ -128,4 +126,3 @@ class OrderController extends Controller
         }
     }
 }
-

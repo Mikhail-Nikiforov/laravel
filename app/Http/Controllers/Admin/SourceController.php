@@ -18,9 +18,8 @@ class SourceController extends Controller
     public function index()
     {
         $sources = Source::withCount('news')
-            ->paginate(
-                config('news.paginate')
-            );
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('admin.paginate'));
 
         return view('admin.sources.index', [
             'sources' => $sources

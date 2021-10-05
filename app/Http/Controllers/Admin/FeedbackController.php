@@ -17,9 +17,9 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbackList = Feedback::paginate(
-                config('news.paginate')
-            );
+        $feedbackList = Feedback::query()
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('admin.paginate'));
 
         return view('admin.feedback.index', [
             'feedbackList' => $feedbackList
